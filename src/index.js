@@ -11,6 +11,10 @@ app.use(express.json());
  const users = [];
 
 function checksExistsUserAccount(request, response, next) {
+
+}
+
+function verifyExistsUsername(request, response, next) {
   const { username } = request.body
 
   const user = users.find((user) => user.username === username)
@@ -22,7 +26,7 @@ function checksExistsUserAccount(request, response, next) {
   return next()
 }
 
-app.post('/users', checksExistsUserAccount, (request, response) => {
+app.post('/users', verifyExistsUsername, (request, response) => {
   const { name, username } = request.body
 
   const user = {
