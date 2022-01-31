@@ -11,10 +11,18 @@ app.use(express.json());
  const users = [];
 
 function checksExistsUserAccount(request, response, next) {
-  // Complete aqui
+  const { username } = request.body
+
+  const user = users.find((user) => user.username === username)
+
+  if (user) {
+    return response.status(400).json({ error: 'Já existe um usuário cadastrado com esse "username"' + username })
+  }
+
+  return next()
 }
 
-app.post('/users', (request, response) => {
+app.post('/users', checksExistsUserAccount, (request, response) => {
   const { name, username } = request.body
 
   const user = {
