@@ -91,11 +91,21 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
     response.status(404).json({ error: 'Todo não encontrado para atualizar' })
   }
 
-  response.json(todo)
+  return response.json(todo)
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { id } = request.params
+  const { user } = request
+
+  const todo = user.todos.find((todo) => {
+    if (todo.id === id) {
+      todo.done = true
+      return todo
+    }
+  })
+
+  return response.json(todo)
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
