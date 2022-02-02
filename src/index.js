@@ -118,6 +118,10 @@ app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
 
   const todo = user.todos.find((todo) => todo.id === id)
 
+  if (!todo) {
+    return response.status(404).json({ error: 'Todo não encontrado para remover' })
+  }
+
   user.todos.splice(todo, 1)
 
   return response.status(204).send()
