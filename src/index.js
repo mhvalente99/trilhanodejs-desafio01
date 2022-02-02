@@ -79,14 +79,17 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
   const { title, deadline } = request.body
   const { user } = request
 
-  user.todos.find((todo) => {
+  const todo = user.todos.find((todo) => {
     if (todo.id === id) {
       todo.title = title
       todo.deadline = deadline
+      return todo
     }
   })
 
-  const todo = user.todos.find((todo) => todo.id === id)
+  if (!todo) {
+    response.status(404).json({ error: 'Todo não encontrado para atualizar' })
+  }
 
   response.json(todo)
 });
