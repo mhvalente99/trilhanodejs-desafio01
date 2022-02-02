@@ -105,6 +105,10 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
     }
   })
 
+  if (!todo) {
+    return response.status(404).json({ error: 'Todo não encontrado para finalizar' })
+  }
+
   return response.json(todo)
 });
 
